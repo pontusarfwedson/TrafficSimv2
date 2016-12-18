@@ -14,6 +14,7 @@
 #include "CarCreator.h"
 #include "TrafLane.h"
 #include "TrafLight.h"
+#include "InvalidInput.h"
 using namespace std;
 
 namespace trafficsystem {
@@ -23,20 +24,32 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
     float probStraight1, float probWest1, float probStraight2, float probWest2) {
 	  // TODO Auto-generated constructor stub
 
-    this->laneLength      = laneLength;
-    this->laneWSLength    = laneWSLength;
-    this->lightPeriod     = lightPeriod;
-    this->lightWestGreen  = lightWestGreen;
-    this->lightSouthGreen = lightSouthGreen;
+    try{
 
-    generator     = CarCreator(probStraight1, probWest1, probStraight2, probWest2);
-    lane          = TrafLane(laneLength);
-    laneWest      = TrafLane(laneWSLength);
-    laneExitWest  = TrafLane(3);             // Just for illustration
-    laneSouth     = TrafLane(laneWSLength);
-    laneExitSouth = TrafLane(3);             // Just for illustration
-    lightWest     = TrafLight(lightPeriod, lightWestGreen);
-    lightSouth    = TrafLight(lightPeriod, lightSouthGreen);
+      this->laneLength      = laneLength;
+      this->laneWSLength    = laneWSLength;
+      this->lightPeriod     = lightPeriod;
+      this->lightWestGreen  = lightWestGreen;
+      this->lightSouthGreen = lightSouthGreen;
+
+      generator     = CarCreator();
+      lane          = TrafLane(laneLength);
+      laneWest      = TrafLane(laneWSLength);
+      laneExitWest  = TrafLane(3);             // Just for illustration
+      laneSouth     = TrafLane(laneWSLength);
+      laneExitSouth = TrafLane(3);             // Just for illustration
+      lightWest     = TrafLight(lightPeriod, lightWestGreen);
+      lightSouth    = TrafLight(lightPeriod, lightSouthGreen);
+
+      if(laneLength < 0 || laneWSLength < 0 || lightPeriod < 0
+          || lightWestGreen < 0 || lightSouthGreen < 0){
+          throw InvalidInput<int>(laneLength);
+      }
+    }
+    catch(InvalidInput<int>& e) {
+      cout << "InvalidInput exception is caught" << endl;
+      cout << e.what() << endl;
+    }
 }
 
 /**
@@ -155,15 +168,15 @@ TrafSystemSim::~TrafSystemSim() {
 } /* namespace query_namespace */
 
 int main() {
-	
+
   Properties prop;
-  trafficsystem::TrafSystemSim tf = trafficsystem::TrafSystemSim(prop.laneLength, 
+  trafficsystem::TrafSystemSim tf = trafficsystem::TrafSystemSim(prop.laneLength,
 		  prop.laneWSLength, prop.lightPeriod, prop.lightWestGreen, prop.lightSouthGreen,
 		  prop.probStraight1, prop.probWest1, prop.probStraight2, prop.probWest2);
   //trafficsystem::TrafficSystem tf = trafficsystem::TrafficSystem(10, 8, 14, 6, 4);
   prop.print();
   usleep(5000000);
- 
+
   //tf.printSetup();
   tf.print();
   for(int i = 0; i < 100; i++) {
