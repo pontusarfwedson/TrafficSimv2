@@ -9,6 +9,7 @@
 #define VEHICLEGENERATOR_H_
 
 #include <vector>
+#include <deque>
 #include <string>
 #include <cstddef>
 #include "Car.h"
@@ -21,7 +22,7 @@ private:
 	vector<int> periods;
 	vector<double> arrivalProbabilities;
 	vector<double> turningProbabilities;
-	vector<string> comments;
+	deque<string> comments;
 
 	int myTime;       // internal clock
   int period;     // current period
