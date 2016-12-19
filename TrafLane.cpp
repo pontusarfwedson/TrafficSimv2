@@ -50,7 +50,8 @@ void TrafLane::step() {
     if(theLane[i-1].getDestination() == ' ') {
       theLane[i-1] = theLane[i];
       Car temp = Car(' ');
-      swap(temp, theLane[i]);
+      theLane[i]   = temp;
+      //swap(temp, theLane[i]);
     }
   }
 }
