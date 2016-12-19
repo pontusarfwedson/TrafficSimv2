@@ -22,7 +22,8 @@ private:
 	vector<int> periods;
 	vector<double> arrivalProbabilities;
 	vector<double> turningProbabilities;
-	deque<string> comments;
+	//deque<string> comments;
+	vector<string> comments;
 
 	int myTime;       // internal clock
   int period;     // current period
