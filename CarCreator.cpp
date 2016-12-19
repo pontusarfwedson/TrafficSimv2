@@ -58,14 +58,12 @@ Car CarCreator::step(){
       myTime = 0;
       period = 0;
     }
-
     if (myTime>=periods.at(period)) {
       period++;
     }
-
     Car retur = Car(' ');
-    double prob = arrivalProbabilities.at(period);
 
+    double prob = arrivalProbabilities.at(period);
     if (((rand()%11)/10.0) < prob) {
       if (((rand()%11)/10.0) < turningProbabilities.at(period)) {
         retur = Car('S');

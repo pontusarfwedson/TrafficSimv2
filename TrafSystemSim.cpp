@@ -32,7 +32,7 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
       this->lightWestGreen  = lightWestGreen;
       this->lightSouthGreen = lightSouthGreen;
 
-      generator     = CarCreator();
+      generator     = CarCreator(probStraight1, probWest1, probStraight2, probWest2);
       lane          = TrafLane(laneLength);
       laneWest      = TrafLane(laneWSLength);
       laneExitWest  = TrafLane(3);             // Just for illustration
@@ -59,7 +59,7 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
   void TrafSystemSim::step() {
     Car v;
 
-                                                // Vehicle leaving at West?
+
     v = laneExitWest.removeFirst();
     if (v.getDestination()!=' ') {
       //exitWest.push_back(Simulation.getTime() - v.getTime());
@@ -73,7 +73,6 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
     }
     laneExitSouth.step();
 
-
                                                  // Take vehicles past the lights if possible
     if (lightWest.isGreen() ) {
       laneExitWest.putLast(laneWest.removeFirst());
@@ -85,7 +84,6 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
                                                  // Step lanes in front of the lights
     laneWest.step();
     laneSouth.step();
-
                                                  // Move from lane to laneWest or laneSouth
     v = lane.getFirst();
     if (v.getDestination()!=' ') {
@@ -99,11 +97,9 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
       else
         blocked++;
     }
-
-                                                 // Step first lane
+                                  // Step first lane
     lane.step();
-
-                                                 // Create vehicles
+                            // Create vehicles
     v = generator.step();
     if (v.getDestination()!=' ') {
       queue.push_back(v);
@@ -115,8 +111,7 @@ TrafSystemSim::TrafSystemSim(int laneLength, int laneWSLength,
     if (!queue.empty()) {
        queued++;
     }
-
-                                                  // Step signals
+                                        // Step signals
     lightWest.step();
     lightSouth.step();
   }
@@ -175,7 +170,7 @@ int main() {
 		  prop.probStraight1, prop.probWest1, prop.probStraight2, prop.probWest2);
   //trafficsystem::TrafficSystem tf = trafficsystem::TrafficSystem(10, 8, 14, 6, 4);
   prop.print();
-  usleep(5000000);
+  usleep(1000000);
 
   //tf.printSetup();
   tf.print();
@@ -183,7 +178,7 @@ int main() {
     cout.flush();
     usleep(100000);
     //Sleep(10000); // for windows
-    tf.print();
+    tf.print();\
     tf.step();
   }
 }
