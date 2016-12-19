@@ -44,33 +44,16 @@ std::string TrafLane::stringify() {
   return "<" + res + ">";
 }
 
-// void Lane::step() {
-//  for (int i = 1; i<theLane.size(); i++) {
-//     if(theLane[i-1].isNull() ) {
-//       theLane[i-1] = theLane[i];
-//       NullVehicle temp;
-//       theLane[i]   = temp;
-//     }
-//   }
-// }
-
 //without using NullVehicle
 void TrafLane::step() {
  for (int i = 1; i<theLane.size(); i++) {
     if(theLane[i-1].getDestination() == ' ') {
       theLane[i-1] = theLane[i];
       Car temp = Car(' ');
-      theLane[i]   = temp;
+      swap(temp, theLane[i]);
     }
   }
 }
-
-// Vehicle Lane::removeFirst() {
-//   Vehicle result = theLane[0];
-//   NullVehicle temp;
-//   theLane[0] = temp;
-//   return result;
-// }
 
 //using without NullVehicle
 Car TrafLane::removeFirst() {
